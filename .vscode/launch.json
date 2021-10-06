@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // First run "./gradlew debugJosm" in terminal
+            // Then start debugging in VSCode to attach to that session
+            "type": "java",
+            "name": "Debug",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 2019
+        }
+    ]
+}
