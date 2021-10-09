@@ -60,7 +60,7 @@ public class ReviewListDialog extends ToggleDialog {
         displayList.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getExtendedKeyCode() == KeyEvent.VK_SPACE) {
+                if (e.getKeyChar() == ' ') {
                     ReviewItem sel = displayList.getSelectedValue();
                     if (sel == null)
                         return;
