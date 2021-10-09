@@ -15,21 +15,23 @@ import javax.swing.SwingUtilities;
 import java.awt.event.MouseAdapter;
 
 import org.openstreetmap.josm.data.APIDataSet;
+import org.openstreetmap.josm.data.osm.DataSelectionListener;
+import org.openstreetmap.josm.data.osm.OsmPrimitive;
+import org.openstreetmap.josm.data.osm.event.SelectionEventManager;
 import org.openstreetmap.josm.data.osm.visitor.BoundingXYVisitor;
 import org.openstreetmap.josm.data.osm.visitor.OsmPrimitiveVisitor;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
-import org.openstreetmap.josm.gui.util.HighlightHelper;
 import org.openstreetmap.josm.tools.Shortcut;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-public class ReviewListDialog extends ToggleDialog {
+public class ReviewListDialog extends ToggleDialog implements DataSelectionListener {
 
     private JList<ReviewItem> displayList;
     private ReviewListModel model = new ReviewListModel();
-    private final HighlightHelper highlightHelper = new HighlightHelper();
+    boolean ignoringSelectionChanges;
 
     public ReviewListDialog() {
         super(tr("Review List"), "reviewPlugin/icon", tr("Open the review list window."),
@@ -43,7 +45,9 @@ public class ReviewListDialog extends ToggleDialog {
         displayList.setCellRenderer(new ReviewItemRenderer());
         displayList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         displayList.addListSelectionListener(e -> {
-            ZoomToSelectedItem();
+            if (!ignoringSelectionChanges) {
+                ZoomToSelectedItem();
+            }
         });
         displayList.addFocusListener(new FocusListener() {
             @Override
@@ -53,7 +57,6 @@ public class ReviewListDialog extends ToggleDialog {
 
             @Override
             public void focusLost(FocusEvent e) {
-                highlightHelper.clear();
             }
         });
 
@@ -90,7 +93,18 @@ public class ReviewListDialog extends ToggleDialog {
                 }
             }
         });
+
         createLayout(displayList, true, buttons);
+    }
+
+    @Override
+    public void showNotify() {
+        SelectionEventManager.getInstance().addSelectionListener(this);
+    }
+
+    @Override
+    public void hideNotify() {
+        SelectionEventManager.getInstance().removeSelectionListener(this);
     }
 
     protected void ZoomToSelectedItem() {
@@ -102,10 +116,27 @@ public class ReviewListDialog extends ToggleDialog {
         if (v.getBounds() == null)
             return;
         MainApplication.getMap().mapView.zoomTo(v);
-        highlightHelper.highlightOnly(sel.getItem());
+        MainApplication.getLayerManager().getEditDataSet().setSelected(sel.getItem());
     }
 
     public void setData(APIDataSet apiData) {
         model.UpdateData(apiData);
+    }
+
+    @Override
+    public void selectionChanged(SelectionChangeEvent event) {
+        if (event.getSelection().size() == 1) {
+            OsmPrimitive selectedItem = (OsmPrimitive) event.getSelection().toArray()[0];
+            for (int i = 0; i < model.getSize(); i++) {
+                if (model.getElementAt(i).getItem() == selectedItem) {
+                    ignoringSelectionChanges = true;
+                    displayList.setSelectedIndex(i);
+                    displayList.ensureIndexIsVisible(i);
+                    ignoringSelectionChanges = false;
+                    return;
+                }
+            }
+        }
+        displayList.clearSelection();
     }
 }
