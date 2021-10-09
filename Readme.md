@@ -16,11 +16,11 @@ The Review plugin can be installed via JOSM plugin manager.
 We use [Gradle plugin for developing JOSM plugins](https://github.com/floscher/gradle-josm-plugin) which simplifies things...
   * Install Gradle https://gradle.org/install/
   * Run `gradle w` to create wrapper in repo
-  * Run `./gradlew runJosm` to compile and run JOSM which loads plugin
+  * Run `./gradlew run` to compile and run JOSM which loads plugin
 
 ### Debugging
 
-  * Run `./gradlew debugJosm`
+  * Run `./gradlew debug`
   * In VSCode start debugging
 
 What this will do is start JOSM with listening for debugger to connect on port 2019, and VSCode will connect to that port and start debugging.
