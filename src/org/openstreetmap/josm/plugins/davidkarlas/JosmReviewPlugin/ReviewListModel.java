@@ -45,15 +45,15 @@ public class ReviewListModel extends AbstractListModel<ReviewItem> {
             }
         }
         for (OsmPrimitive o : newItems) {
-            items.add(new ReviewItem(o, false, false));
+            items.add(new ReviewItem(o));
         }
         for (OsmPrimitive way : parentWays) {
             if (!newItems.contains(way))
-                items.add(new ReviewItem(way, false, true));
+                items.add(new ReviewItem(way));
         }
         for (OsmPrimitive relation : parentRelations) {
             if (!newItems.contains(relation))
-                items.add(new ReviewItem(relation, false, true));
+                items.add(new ReviewItem(relation));
         }
         items.sort(new Comparator<ReviewItem>() {
             @Override

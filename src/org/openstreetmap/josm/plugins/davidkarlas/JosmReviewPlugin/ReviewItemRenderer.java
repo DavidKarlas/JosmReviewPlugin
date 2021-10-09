@@ -27,7 +27,7 @@ public class ReviewItemRenderer implements ListCellRenderer<ReviewItem> {
         if (item != null && comp instanceof JLabel) {
             OsmPrimitive osm = item.getItem();
             JLabel jlabel = (JLabel) comp;
-            jlabel.setText((item.isOnlyChildChanged() ? "moved" : "modifed") + ": " + formatter.format(osm));
+            jlabel.setText(item.getChangeLabel() + ": " + formatter.format(osm));
             jlabel.setToolTipText(formatter.buildDefaultToolTip(osm));
             jlabel.setIcon(item.getReviewed() ? okImageIcon : cancelImageIcon);
         }

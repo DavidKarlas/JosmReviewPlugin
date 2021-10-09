@@ -4,17 +4,10 @@ import org.openstreetmap.josm.data.osm.OsmPrimitive;
 
 public class ReviewItem {
     private OsmPrimitive item;
-    private boolean reviewed;
-    private boolean onlyChildChanged;
+    private boolean reviewed = false;
 
-    public ReviewItem(OsmPrimitive item, boolean reviewed, boolean onlyChildChanged) {
+    public ReviewItem(OsmPrimitive item) {
         this.item = item;
-        this.reviewed = reviewed;
-        this.onlyChildChanged = onlyChildChanged;
-    }
-
-    public boolean isOnlyChildChanged() {
-        return onlyChildChanged;
     }
 
     public OsmPrimitive getItem() {
@@ -27,5 +20,25 @@ public class ReviewItem {
 
     public void ToggleReviewed() {
         reviewed = !reviewed;
+    }
+
+    public String getChangeLabel() {
+        if (item.isDeleted()) {
+            if (item.getId() < 1)
+                return "new+deleted";
+            return "deleted";
+        }
+        if (item.isModified()) {
+            if (item.getId() < 1)
+                return "new+modified";
+            return "modified";
+        }
+        if (item.isNew()) {
+            return "new";
+        }
+        // If not deleted,modified or added
+        // it must came here via child node being moved
+        // hence mark it as moved.
+        return "moved";
     }
 }
