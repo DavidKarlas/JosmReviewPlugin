@@ -5,6 +5,12 @@ plugins {
   id("java")
 }
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(8))
+  }
+}
+
 sourceSets {
     main {
         java {
@@ -21,7 +27,7 @@ josm {
   debugPort = 2019
   josmCompileVersion = "18193"
   manifest {
-    version = "1.0.1"
+    version = "1.0.2"
     description = "JOSM plugin for reviewing changes."
     mainClass = "org.openstreetmap.josm.plugins.davidkarlas.JosmReviewPlugin.JosmReviewPlugin"
     minJosmVersion = "18193"
