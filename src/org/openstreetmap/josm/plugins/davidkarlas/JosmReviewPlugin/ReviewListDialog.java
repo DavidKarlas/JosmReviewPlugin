@@ -4,17 +4,20 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.awt.event.MouseEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import java.awt.event.MouseAdapter;
 
-import org.openstreetmap.josm.data.APIDataSet;
+import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.osm.DataSelectionListener;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.event.SelectionEventManager;
@@ -24,6 +27,8 @@ import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.SideButton;
 import org.openstreetmap.josm.gui.dialogs.ToggleDialog;
 import org.openstreetmap.josm.tools.Shortcut;
+
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -37,9 +42,9 @@ public class ReviewListDialog extends ToggleDialog implements DataSelectionListe
         super(tr("Review List"), "reviewPlugin/icon", tr("Open the review list window."),
                 Shortcut.registerShortcut("subwindow:reviewchanges", tr("Windows: {0}", tr("Review List")),
                         KeyEvent.VK_E, Shortcut.ALT_SHIFT),
-                350, false);
+                200, true);
 
-        List<SideButton> buttons = new LinkedList<>();
+        List<AbstractAction> buttons = new LinkedList<>();
 
         displayList = new JList<>(model);
         displayList.setCellRenderer(new ReviewItemRenderer());
@@ -86,15 +91,28 @@ public class ReviewListDialog extends ToggleDialog implements DataSelectionListe
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
-                    ReviewItem sel = displayList.getSelectedValue();
-                    if (sel == null)
-                        return;
-                    model.ToggleReviewed(sel);
+                    ToggleReviewed();
                 }
             }
         });
+        buttons.add(new StartReviewAction());
+        buttons.add(new JosmAction("Toggle", "reviewplugin/ReviewedItem", "Toggles state of currently selected item. You can also use Spacebar key or double-click with mouse.",
+                Collections.singletonList(null)) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ToggleReviewed();
+            }
+        });
 
-        createLayout(displayList, true, buttons);
+        createLayout(displayList, true,
+                buttons.stream().map((AbstractAction a) -> new SideButton(a)).collect(Collectors.toList()));
+    }
+
+    protected void ToggleReviewed() {
+        ReviewItem sel = displayList.getSelectedValue();
+        if (sel == null)
+            return;
+        model.ToggleReviewed(sel);
     }
 
     @Override
@@ -119,8 +137,8 @@ public class ReviewListDialog extends ToggleDialog implements DataSelectionListe
         MainApplication.getLayerManager().getEditDataSet().setSelected(sel.getItem());
     }
 
-    public void setData(APIDataSet apiData) {
-        model.UpdateData(apiData);
+    public void StartReview() {
+        model.StartReview();
     }
 
     @Override

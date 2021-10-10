@@ -4,22 +4,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
+import javax.swing.JOptionPane;
+
 import org.openstreetmap.josm.data.APIDataSet;
 import org.openstreetmap.josm.data.coor.LatLon;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.Relation;
 import org.openstreetmap.josm.data.osm.Way;
+import org.openstreetmap.josm.gui.MainApplication;
+import org.openstreetmap.josm.gui.Notification;
 
 public class ReviewListModel extends AbstractListModel<ReviewItem> {
-    private APIDataSet data;
-    private List<ReviewItem> items;
+    private List<ReviewItem> items = new LinkedList<>();
 
-    public void UpdateData(APIDataSet data) {
-        this.data = data;
+    public void StartReview() {
+        // TODO: Don't lose state of already reviewed items...
+        APIDataSet data = new APIDataSet(MainApplication.getLayerManager().getActiveDataSet());
         items = new ArrayList<>();
         LinkedHashSet<OsmPrimitive> newItems = new LinkedHashSet<>();
         LinkedHashSet<Way> parentWays = new LinkedHashSet<>();
@@ -69,6 +74,11 @@ public class ReviewListModel extends AbstractListModel<ReviewItem> {
             }
         });
         fireContentsChanged(this, 0, getSize());
+
+        if (getSize() == 0) {
+            new Notification("No changes detected.").setIcon(JOptionPane.INFORMATION_MESSAGE)
+                    .setDuration(Notification.TIME_SHORT).show();
+        }
     }
 
     @Override

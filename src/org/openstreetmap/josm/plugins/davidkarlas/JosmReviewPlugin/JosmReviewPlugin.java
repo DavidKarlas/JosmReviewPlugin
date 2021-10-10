@@ -1,16 +1,21 @@
 package org.openstreetmap.josm.plugins.davidkarlas.JosmReviewPlugin;
 
 import org.openstreetmap.josm.gui.MainApplication;
-import org.openstreetmap.josm.gui.MainMenu;
+import org.openstreetmap.josm.gui.MapFrame;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
 public class JosmReviewPlugin extends Plugin {
-    StartReviewAction startReviewAction;
     public JosmReviewPlugin(PluginInformation info) {
         super(info);
-        
-        startReviewAction = new StartReviewAction();
-        MainMenu.add(MainApplication.getMenu().toolsMenu, startReviewAction);
+    }
+
+    @Override
+    public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
+        ReviewListDialog existingDialog=MainApplication.getMap().getToggleDialog(ReviewListDialog.class);
+        if (existingDialog != null) {
+            oldFrame.removeToggleDialog(existingDialog);
+        }
+        newFrame.addToggleDialog(new ReviewListDialog());
     }
 }
