@@ -12,10 +12,15 @@ public class JosmReviewPlugin extends Plugin {
 
     @Override
     public void mapFrameInitialized(MapFrame oldFrame, MapFrame newFrame) {
-        ReviewListDialog existingDialog=MainApplication.getMap().getToggleDialog(ReviewListDialog.class);
+        ReviewListDialog existingDialog = null;
+        if (oldFrame != null) {
+            existingDialog = oldFrame.getToggleDialog(ReviewListDialog.class);
+        }
         if (existingDialog != null) {
             oldFrame.removeToggleDialog(existingDialog);
         }
-        newFrame.addToggleDialog(new ReviewListDialog());
+        if (newFrame != null) {
+            newFrame.addToggleDialog(new ReviewListDialog());
+        }
     }
 }
