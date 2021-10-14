@@ -33,7 +33,7 @@ josm {
     minJosmVersion = "18193"
     author = "David Karlaš"
     canLoadAtRuntime = true
-    iconPath = "dialogs/reviewPlugin/icon"
+    iconPath = "images/dialogs/reviewPlugin/icon"
     website = URL("https://github.com/DavidKarlas/JosmReviewPlugin")
   }
 }
