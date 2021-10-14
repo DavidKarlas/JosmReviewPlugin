@@ -27,7 +27,7 @@ josm {
   debugPort = 2019
   josmCompileVersion = "18193"
   manifest {
-    version = "1.0.3"
+    version = "1.0.4"
     description = "JOSM plugin for reviewing changes."
     mainClass = "org.openstreetmap.josm.plugins.davidkarlas.JosmReviewPlugin.JosmReviewPlugin"
     minJosmVersion = "18193"
