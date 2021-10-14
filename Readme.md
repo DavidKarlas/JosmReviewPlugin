@@ -11,6 +11,13 @@ The Review plugin can be installed via JOSM plugin manager.
   * Open Preferences -> Plugins
   * Search for the plugin "Review Changes" and install it
 
+## How to use
+
+ 1) After installing plugin new pad should appear "Review List" in bottom-right corner of window. If not use "Windows"->"Review List" in main bar of window to toggle.
+ 1) Once you want to review changes you made, click on "Start Review" button, list will be filled with all changes.
+ 1) Click on item in list and use Up and Down keyboard buttons to move quickly between items in list.
+ 1) Optionally you can use Spacebar key to toggle state(Reviewed/Not Reviewed) of item.
+
 ## How to develop
 
 We use [Gradle plugin for developing JOSM plugins](https://github.com/floscher/gradle-josm-plugin) which simplifies things...
