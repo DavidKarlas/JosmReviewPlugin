@@ -32,5 +32,10 @@ We use [Gradle plugin for developing JOSM plugins](https://github.com/floscher/g
 
 What this will do is start JOSM with listening for debugger to connect on port 2019, and VSCode will connect to that port and start debugging.
 
+## TODO/Future ideas
+
+  * Additional window that shows tags changed of selected element
+  * Additional overlay that shows old geometry of selected element
+
 ## License
 Since [JOSM](https://github.com/JOSM/josm) itself is GPL 3.0 it makes sense for this plugin to be too.
