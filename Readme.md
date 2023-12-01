@@ -15,8 +15,8 @@ The Review plugin can be installed via JOSM plugin manager.
 
  1) After installing plugin new pad should appear "Review List" in bottom-right corner of window. If not use "Windows"->"Review List" in main bar of window to toggle.
  1) Once you want to review changes you made, click on "Start Review" button, list will be filled with all changes.
- 1) Click on item in list and use Up and Down keyboard buttons to move quickly between items in list.
- 1) Optionally you can use Spacebar key to toggle state(Reviewed/Not Reviewed) of item.
+ 1) Use Control+Alt+Enter keyboard shortcut to mark current item in list reviewed and move to next one.
+ 1) There are also other shortcuts like Control+Alt+Up/Down to move up and down in list and Control+Alt+Right/Left to move between unreviewed changes
 
 ## How to develop
 
