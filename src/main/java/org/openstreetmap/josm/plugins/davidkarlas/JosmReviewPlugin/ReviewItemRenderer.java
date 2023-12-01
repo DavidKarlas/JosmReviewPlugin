@@ -16,8 +16,8 @@ public class ReviewItemRenderer implements ListCellRenderer<ReviewItem> {
 
     private final DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
     private final DefaultNameFormatter formatter = DefaultNameFormatter.getInstance();
-    private ImageIcon okImageIcon = new ImageProvider("reviewplugin/ReviewedItem").setSize(ImageSizes.SMALLICON).get();
-    private ImageIcon cancelImageIcon = new ImageProvider("reviewplugin/UnReviewedItem").setSize(ImageSizes.SMALLICON).get();
+    private ImageIcon reviewedImageIcon = new ImageProvider("reviewplugin/check-one").setSize(ImageSizes.SMALLICON).get();
+    private ImageIcon unreviewedImageIcon = new ImageProvider("reviewplugin/close-one").setSize(ImageSizes.SMALLICON).get();
 
     @Override
     public Component getListCellRendererComponent(JList<? extends ReviewItem> list, ReviewItem item, int index,
@@ -29,7 +29,7 @@ public class ReviewItemRenderer implements ListCellRenderer<ReviewItem> {
             JLabel jlabel = (JLabel) comp;
             jlabel.setText(item.getChangeLabel() + ": " + formatter.format(osm));
             jlabel.setToolTipText(formatter.buildDefaultToolTip(osm));
-            jlabel.setIcon(item.getReviewed() ? okImageIcon : cancelImageIcon);
+            jlabel.setIcon(item.getReviewed() ? reviewedImageIcon : unreviewedImageIcon);
         }
         return comp;
     }

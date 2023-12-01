@@ -1,0 +1,8 @@
+plugins {
+	id 'java'
+	id 'org.openstreetmap.josm' version '0.8.2'
+}
+
+josm {
+	debugPort = 2019
+}

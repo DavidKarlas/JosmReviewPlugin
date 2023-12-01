@@ -8,7 +8,7 @@ public class ReviewItem {
 
     public ReviewItem(OsmPrimitive item) {
         this.item = item;
-    }
+    } 
 
     public OsmPrimitive getItem() {
         return item;
@@ -18,8 +18,9 @@ public class ReviewItem {
         return reviewed;
     }
 
-    public void ToggleReviewed() {
+    public boolean ToggleReviewed() {
         reviewed = !reviewed;
+        return reviewed;
     }
 
     public String getChangeLabel() {
