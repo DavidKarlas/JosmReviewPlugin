@@ -6,3 +6,9 @@ plugins {
 josm {
 	debugPort = 2019
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
